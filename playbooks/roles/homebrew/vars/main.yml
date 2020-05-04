@@ -43,6 +43,7 @@ homebrew_installed_packages:
     - 'neofetch'
     - 'node'
     - 'nmap'
+    - 'openfaas-cli'
     - 'openssl'
     - 'python'
     - 'ranger'

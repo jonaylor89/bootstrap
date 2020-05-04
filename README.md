@@ -5,16 +5,16 @@ I finally taught myself how ansible works and decided that it is much better
 than my janky bash scripts. There will be a MacOS, Arch, and Ubuntu playbook
 for computers running MacOS, Arch based linux distros, and Ubuntu based linux
 distros respectively. I will put more details in a README with the playbooks
-but the macOS one will be my riced macOS setuping with chunkwm, homebrew, and a
+but the macOS one will be my riced macOS setup with yabai, homebrew, and a
 bunch of other goodies, the Arch playbook will be some other riced out i3
-setup, and the ubuntu playbook will be some KDE based setup. I prefer neon OS
-so it'll probably work best with that.
+setup, and the ubuntu playbook is tested on 20.04
 
 ------------------------
 
 ## Nix systems
 ```
-    ~$ curl -sSL https://raw.githubusercontent.com/jonaylor89/bootstrap/master/{{ mac || arch || ubuntu }}.sh
+    ~$ curl -sSL https://raw.githubusercontent.com/jonaylor89/bootstrap/master/{{ mac || arch || ubuntu }}.sh 
+    ~$ sudo ./{{ mac || arch || ubuntu }}.sh
 ```
 
 ---------------------------

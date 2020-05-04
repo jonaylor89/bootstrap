@@ -32,7 +32,6 @@
         shell: curl -fsSL https://starship.rs/install.sh | bash
         args:
           warn: false
-
         
       - name: Install oh-my-zsh
         git: 

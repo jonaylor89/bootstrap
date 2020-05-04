@@ -12,10 +12,11 @@
         state: directory
     # Create ssh keys for github
   tasks: 
-  # - name: Dotfiles
-  # git: 
-  # repo: 'https://github.com/{{ dotfiles }}.git'
-  # dest: '{{ ansible_env.HOME }}/Repos/dotfiles'
+   - name: Dotfiles
+     git: 
+      repo: 'https://github.com/{{ dotfiles }}.git'
+      dest: '{{ ansible_env.HOME }}/Repos/dotfiles'
+      update: yes
 
    - name: OSX Config
      include_role:
