@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+set -e
+
 # Install git
 printf "\x1b[32m[+] Installing git\x1b[m\n\n"
 sudo apt-get install git
@@ -15,7 +17,7 @@ git clone --recurse-submodules https://github.com/jonaylor89/bootstrap.git "$HOM
 
 # Install ansible to install everything
 printf "\x1b[32mInstalling ansible\x1b[m\n\n"
-pip install ansible
+sudo apt install ansible
 
 # Put downloaded plays into default location
 printf "\x1b[32m[+] Linking libraries\x1b[m\n\n"
