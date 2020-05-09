@@ -23,7 +23,7 @@ sudo apt install ansible
 printf "\x1b[32m[+] Linking libraries\x1b[m\n\n"
 ln -s "$HOME/Repos/dotfiles/ansible" "$HOME/.ansible"
 
-# Execute MacOS playbook
+# Execute Ubuntu playbook
 printf "\x1b[32m[+] Executing plays\x1b[m\n\n"
 ansible-playbook "$HOME/Repos/bootstrap/playbooks/ubuntu-desktop.yml" -K
 
