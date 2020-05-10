@@ -2,6 +2,9 @@
 - apt_repository:
     repo: "ppa:mmstick76/alacritty"
 
+- apt_repository:
+    repo: "ppa:ubuntu-mozilla-daily/ppa" 
+
 - name: Update all packages to the latest version
   apt:
     upgrade: dist
@@ -15,7 +18,7 @@
 - name: Install a list of packages
   apt:
     pkg:
-            # - firefox-trunk
+    - firefox-trunk
     - alacritty
     - vim
     - zsh
