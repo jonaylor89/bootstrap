@@ -1,27 +1,34 @@
 
-# Install snaps
-- name: Install 
-  snap:
-    name:
-      - docker
-      - chromium
-      - vscodium
-      - go
-      - kotlin
-      - alacritty
-      - node
-      - figma-linux
-      - tor
-      - vlc
+- apt_repository:
+    repo: "ppa:mmstick76/alacritty"
 
-# Install a snap with classic confinement
-# - name: Install "foo" with option --classic
-#   snap:
-#     name: foo
-#     classic: yes
+- name: Update all packages to the latest version
+  apt:
+    upgrade: dist
+  become: true
 
-# # Install a snap with from a specific channel
-# - name: Install "foo" with option --channel=latest/edge
-#   snap:
-#     name: foo
-#     channel: latest/edge
+- name: Run the equivalent of "apt-get update" as a separate step
+  apt:
+    update_cache: yes
+  become: true
+
+- name: Install a list of packages
+  apt:
+    pkg:
+            # - firefox-trunk
+    - alacritty
+    - vim
+    - zsh
+    - wireguard
+    - virtualbox
+    - tmux
+    - ffmpeg
+    - openvpn 
+    - dialog 
+    - python3-pip 
+    - python3-setuptools
+    - vagrant
+    - python3
+    - openssl
+    - libssl-dev
+  become: true

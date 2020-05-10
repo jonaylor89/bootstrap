@@ -1,4 +1,6 @@
 
-- name: Include python packages
-  include_role: 
-    name: geerlingguy.pip
+- pip:
+    name:
+      - awscli
+      - protonvpn-cli
+      - pexpect

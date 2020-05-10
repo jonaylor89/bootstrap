@@ -5,7 +5,12 @@
     warn: false
 
 - name: install rustfmt, clippy
-  command: rustup component add {{ item }}
+  command: "{{ ansible_env.HOME }}/.cargo/bin/rustup component add {{ item }}"
   with_items:
   - rustfmt
   - clippy
+
+- name: install cargo
+  command: "{{ ansible_env.HOME }}/.cargo/bin/cargo install {{ item }}"
+  with_items:
+  - exa

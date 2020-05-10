@@ -1,23 +1,41 @@
 
-- name: Update all packages to the latest version
-  apt:
-    upgrade: dist
+# Install snaps
+- name: Install 
+  snap:
+    name:
+      - bitwarden
+      - docker
+      - chromium
+      - codium
+      - figma-linux
+      - terraform
+      - tor
+      - vlc
+  become: true
 
-- name: Run the equivalent of "apt-get update" as a separate step
-  apt:
-    update_cache: yes
+# Install a snap with classic confinement
+- name: Install snaps with option --classic
+  snap:
+    name:
+      - go
+      - kotlin
+      - codium
+    classic: yes
+  become: true
 
-- name: Install a list of packages
-  apt:
-    pkg:
-    - firefox-trunk
-    - vim
-    - zsh
-    - vagrant
-    - terraform
-    - bitwarden
-    - protonvpn
-    - wireguard
-    - virtualbox
-    - tmux
-    - ffmpeg
+# Install a snap with from a specific channel
+# - name: Install snaps with option --channel=latest/edge
+# snap:
+# name:
+# - node
+# channel: latest/edge
+# become: true
+
+# Install snap with classic and edge
+- name: Install snaps with option --channel=latest/edge and classic
+  snap:
+    name:
+      - node
+    channel: latest/edge
+    classic: yes
+  become: true

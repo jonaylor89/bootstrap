@@ -27,3 +27,7 @@ ln -s "$HOME/Repos/dotfiles/ansible" "$HOME/.ansible"
 printf "\x1b[32m[+] Executing plays\x1b[m\n\n"
 ansible-playbook "$HOME/Repos/bootstrap/playbooks/ubuntu-desktop.yml" -K
 
+# Recommend installing fonts
+printf "\x1b[32m[+] Install fonts at:\x1b[m"
+printf "\thttps://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/AnonymousPro/complete/Anonymice%20Nerd%20Font%20Complete%20Mono.ttf"
+printf "\thttps://www.jetbrains.com/lp/mono/\n\n"
