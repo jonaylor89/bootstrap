@@ -26,14 +26,8 @@
      include_role:
         name: rust
 
-  # - name: Link Configs
-  # file: 
-        
    - name: Install oh-my-zsh
-     git: 
-       repo: https://github.com/robbyrussell/oh-my-zsh.git 
-       dest: '{{ ansible_env.HOME }}/.local/share/oh-my-zsh'
-       update: yes
+     shell: sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" 
 
    - name: Install oh-my-fish
      git: 
