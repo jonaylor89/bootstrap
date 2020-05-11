@@ -1,126 +1,203 @@
-
-- 
-  name: MacOS Desktop Configuration
+- name: MacOS Desktop Configuration
   hosts: localhost
   vars:
-    - login_shell: /usr/local/bin/zsh
-    - dotfiles: jonaylor89/dotfiles
+    - login_shell: /usr/bin/zsh
+    - dotfiles_remote: jonaylor89/dotfiles
+    - dotfiles_home: "{{ ansible_env.HOME }}/Repos/dotfiles"
   pre_tasks:
     - name: Pull Configurations
-      file: 
-        path: '{{ ansible_env.HOME }}/Repos'
+      file:
+        path: "{{ ansible_env.HOME }}/{{ item }}"
         state: directory
-    # Create ssh keys for github
-  tasks: 
-   - name: Dotfiles
-     git: 
-      repo: 'https://github.com/{{ dotfiles }}.git'
-      dest: '{{ ansible_env.HOME }}/Repos/dotfiles'
-      update: yes
+      with_items:
+        - Repos 
+        - bins
+  tasks:
+    - name: Dotfiles
+      git:
+        repo: "https://github.com/{{ dotfiles_remote }}.git"
+        dest: "{{ ansible_env.HOME }}/Repos/dotfiles"
+        update: yes
 
-   - name: OSX Config
-     include_role:
+    - name: OSX Config
+      include_role:
         name: osx
+      ignore_errors: true
 
-   - name: Install rust
-     include_role:
+    - name: Install rust
+      include_role:
         name: rust
+      ignore_errors: true
 
-   - name: Install oh-my-zsh
-     shell: sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" 
+    - name: Configure zsh
+      include_role:
+        name: zsh
+      ignore_errors: true
+    
+    - name: Python Package Manager
+      include_role:
+        name: pip
+      ignore_errors: true
 
-   - name: Install oh-my-fish
-     git: 
-       repo: https://github.com/oh-my-fish/oh-my-fish.git 
-       dest: '{{ ansible_env.HOME }}/.local/share/omf'
-       update: yes
+    - name: install startship.rs
+      shell: "{{ ansible_env.HOME }}/.cargo/bin/cargo install starship"
+      ignore_errors: true
 
-   - name: Install tmux plugin manager
-     git: 
-       repo: https://github.com/tmux-plugins/tpm.git 
-       dest: '{{ ansible_env.HOME }}/.local/share/tpm'
-       update: yes
+    - name: Install oh-my-fish
+      git:
+        repo: https://github.com/oh-my-fish/oh-my-fish.git
+        dest: "{{ ansible_env.HOME }}/.local/share/omf"
+        update: yes
 
-   - name: Install dein.vim
-     git: 
-       repo: https://github.com/Shougo/dein.vim.git 
-       dest: '{{ ansible_env.HOME }}/.cache/dein/repos/github.com/Shougo/dein.vim'
-       update: yes
+    - name: Install tmux plugin manager
+      git:
+        repo: https://github.com/tmux-plugins/tpm.git
+        dest: "{{ ansible_env.HOME }}/.local/share/tpm"
+        update: yes
 
-       # - name: Symlink Config Files
-       # file:
-       # src: ""
-       # dest: ""
-       # state: link
+    - name: Install dein.vim
+      git:
+        repo: https://github.com/Shougo/dein.vim.git
+        dest: "{{ ansible_env.HOME }}/.cache/dein/repos/github.com/Shougo/dein.vim"
+        update: yes
 
-   - name: Window Manager 
-     include_role:
-       name: yabai
+    - name: Window Manager
+      include_role:
+        name: yabai
+      ignore_errors: true
 
-   - name: Package Manager
-     include_role:
-       name: homebrew
+    - name: Package Manager
+      include_role:
+        name: homebrew
+      ignore_errors: true
 
-  - name: Python Package Manager
-     include_role:
-       name: pip
+    - name: Python Package Manager
+      include_role:
+        name: pip
+      ignore_errors: true
 
-   - block:
-      - name: check if homebrew bash is installed
-        stat: 
-          path: /usr/local/bin/bash
-        register: brew_bash
+    - block:
+        - name: check if homebrew bash is installed
+          stat:
+            path: /usr/local/bin/bash
+          register: brew_bash
+          ignore_errors: true
 
-      - name: add homebrew bash to /etc/shells
-        lineinfile: 
-          dest: /etc/shells 
-          line: "/usr/local/bin/bash" 
-          state: present
-        when: brew_bash.stat.exists
+        - name: add homebrew bash to /etc/shells
+          lineinfile:
+            dest: /etc/shells
+            line: "/usr/local/bin/bash"
+            state: present
+          when: brew_bash.stat.exists
+          ignore_errors: true
 
-      - name: check if homebrew zsh is installed
-        stat: 
-          path: /usr/local/bin/zsh
-        register: brew_zsh
+        - name: check if homebrew zsh is installed
+          stat:
+            path: /usr/local/bin/zsh
+          register: brew_zsh
+          ignore_errors: true
 
-      - name: add homebrew zsh to /etc/shells
-        lineinfile: 
-          dest: /etc/shells 
-          line: "/usr/local/bin/zsh" 
-          state: present
-        when: brew_zsh.stat.exists
+        - name: add homebrew zsh to /etc/shells
+          lineinfile:
+            dest: /etc/shells
+            line: "/usr/local/bin/zsh"
+            state: present
+          when: brew_zsh.stat.exists
+          ignore_errors: true
 
-      - name: check if homebrew fish is installed
-        stat: 
-          path: /usr/local/bin/fish
-        register: brew_fish
+        - name: check if homebrew fish is installed
+          stat:
+            path: /usr/local/bin/fish
+          register: brew_fish
+          ignore_errors: true
 
-      - name: add homebrew fish to /etc/shells
-        lineinfile: 
-          dest: /etc/shells 
-          line: "/usr/local/bin/fish" 
-          state: present
-        when: brew_fish.stat.exists
+        - name: add homebrew fish to /etc/shells
+          lineinfile:
+            dest: /etc/shells
+            line: "/usr/local/bin/fish"
+            state: present
+          ignore_errors: true
 
-     when: ansible_os_family == "Darwin"
-     become: yes
+    - name: check if preferred login_shell is installed
+      stat: path={{ login_shell }}
+      register: login_shell_installed
+      ignore_errors: true
 
-   - name: check if preferred login_shell is installed
-     stat: path={{ login_shell }}
-     register: login_shell_installed
+    - name: Set default shell
+      user:
+        name: "{{ ansible_user_id }}"
+        shell: "{{ login_shell }}"
+      become: yes
+      ignore_errors: true
 
-   - name: Set default shell
-     user: 
-       name: "{{ ansible_user_id }}" 
-       shell: "{{ login_shell }}"
-     when: login_shell_installed.stat.exists
-     become: yes
+    - name: Specify iTerm preferences directory
+      command: defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/Repos/dotfiles/iterm2"
 
-   - name: Specify iTerm preferences directory 
-     command: defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/Repos/dotfiles/iterm2"
+    - name: Tell iTerm to use custom preferences
+      command: defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 
-   - name: Tell iTerm to use custom preferences 
-     command: defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
+    - name: Link vimrc
+      file:
+        src: "{{ dotfiles_home }}/vimrc"
+        dest: "{{ ansible_env.HOME }}/.vimrc"
+        state: link
+        force: true
+      ignore_errors: true
 
+    - name: Link zshrc
+      file:
+        src: "{{ dotfiles_home }}/zshrc"
+        dest: "{{ ansible_env.HOME }}/.zshrc"
+        state: link
+        force: true
+      ignore_errors: true
 
+    - name: Link bashrc
+      file:
+        src: "{{ dotfiles_home }}/bashrc"
+        dest: "{{ ansible_env.HOME }}/.bashrc"
+        state: link
+        force: true
+      ignore_errors: true
 
+    - name: Create alacritty config location
+      file:
+        path: "{{ ansible_env.HOME }}/.config/alacritty"
+        state: directory
+
+    - name: Link alacritty yml
+      file:
+        src: "{{ dotfiles_home }}/alacritty.yml"
+        dest: "{{ ansible_env.HOME }}/.config/alacritty/alacritty.yml"
+        state: link
+        force: true
+      ignore_errors: true
+
+    - name: Link gitconfig
+      file:
+        src: "{{ dotfiles_home }}/gitconfig"
+        dest: "{{ ansible_env.HOME }}/.gitconfig"
+        state: link
+        force: true
+      ignore_errors: true
+
+    - name: Link pypirc
+      file:
+        src: "{{ dotfiles_home }}/pypirc"
+        dest: "{{ ansible_env.HOME }}/.pypirc"
+        state: link
+        force: true
+      ignore_errors: true
+
+    - name: Create starship config location
+      file:
+        path: "{{ ansible_env.HOME }}/.config/starship"
+        state: directory
+
+    - name: Link startship.toml
+      file:
+        src: "{{ dotfiles_home }}/starship.toml"
+        dest: "{{ ansible_env.HOME }}/.config/starship/starship.toml"
+        state: link
+        force: true
+      ignore_errors: true
