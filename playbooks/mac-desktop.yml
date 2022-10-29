@@ -11,7 +11,7 @@
         state: directory
       with_items:
         - Repos 
-        - bin
+        - .bin
   tasks:
     - name: Dotfiles
       git:
