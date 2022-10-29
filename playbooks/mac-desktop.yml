@@ -11,7 +11,7 @@
         state: directory
       with_items:
         - Repos 
-        - bins
+        - bin
   tasks:
     - name: Dotfiles
       git:
@@ -61,63 +61,11 @@
         dest: "{{ ansible_env.HOME }}/.cache/dein/repos/github.com/Shougo/dein.vim"
         update: yes
 
-    - name: Window Manager
-      include_role:
-        name: yabai
-      ignore_errors: true
-
-    - name: Package Manager
-      include_role:
-        name: homebrew
-      ignore_errors: true
-
     - name: Python Package Manager
       include_role:
         name: pip
       ignore_errors: true
-
-    - block:
-        - name: check if homebrew bash is installed
-          stat:
-            path: /usr/local/bin/bash
-          register: brew_bash
-          ignore_errors: true
-
-        - name: add homebrew bash to /etc/shells
-          lineinfile:
-            dest: /etc/shells
-            line: "/usr/local/bin/bash"
-            state: present
-          when: brew_bash.stat.exists
-          ignore_errors: true
-
-        - name: check if homebrew zsh is installed
-          stat:
-            path: /usr/local/bin/zsh
-          register: brew_zsh
-          ignore_errors: true
-
-        - name: add homebrew zsh to /etc/shells
-          lineinfile:
-            dest: /etc/shells
-            line: "/usr/local/bin/zsh"
-            state: present
-          when: brew_zsh.stat.exists
-          ignore_errors: true
-
-        - name: check if homebrew fish is installed
-          stat:
-            path: /usr/local/bin/fish
-          register: brew_fish
-          ignore_errors: true
-
-        - name: add homebrew fish to /etc/shells
-          lineinfile:
-            dest: /etc/shells
-            line: "/usr/local/bin/fish"
-            state: present
-          ignore_errors: true
-
+      
     - name: check if preferred login_shell is installed
       stat: path={{ login_shell }}
       register: login_shell_installed

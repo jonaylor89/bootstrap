@@ -9,18 +9,12 @@ homebrew_cask_apps:
     - 'google-chrome' 
     - 'iterm2'
     - 'jetbrains-toolbox'
-    - 'lastpass'
     - 'macvim'
     - 'notion'
-    - 'processing'
-    - 'signal'
     - 'slack' 
     - 'spotify' 
-    - 'transmission'
-    - 'ubersicht'
     - 'vscodium'
 homebrew_installed_packages:
-    - 'autoconf'
     - 'ansible'
     - 'bash-completion'
     - 'cmake'
@@ -57,8 +51,6 @@ homebrew_installed_packages:
     - 'zsh-syntax-highlighting'
 homebrew_taps:
     - koekeishiya/formulae
-    - crisidev/chunkwm
-    - caskroom/fonts
     - homebrew/bundle
     - homebrew/cask
     - homebrew/cask-drivers
