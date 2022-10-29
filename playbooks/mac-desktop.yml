@@ -24,6 +24,11 @@
         name: osx
       ignore_errors: true
 
+    - name: Homebrew
+      include_role:
+        name: homebrew
+      ignore_errors: true
+
     - name: Install rust
       include_role:
         name: rust
