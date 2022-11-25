@@ -1,7 +1,7 @@
 - name: MacOS Desktop Configuration
   hosts: localhost
   vars:
-    - login_shell: /usr/bin/zsh
+    - login_shell: /bin/zsh
     - dotfiles_remote: jonaylor89/dotfiles
     - dotfiles_home: "{{ ansible_env.HOME }}/Repos/dotfiles"
   pre_tasks:
@@ -24,8 +24,7 @@
         name: osx
       ignore_errors: true
 
-    - name: Homebrew
-      include_role:
+    - name: Homebrew include_role:
         name: homebrew
       ignore_errors: true
 
