@@ -13,4 +13,4 @@
 - name: install cargo
   command: "{{ ansible_env.HOME }}/.cargo/bin/cargo install {{ item }}"
   with_items:
-  - exa
+  - eza
